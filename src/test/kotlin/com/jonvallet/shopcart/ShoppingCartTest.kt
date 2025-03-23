@@ -55,7 +55,7 @@ class ShoppingCartTest {
 
 	@ParameterizedTest
 	@MethodSource("provideItems")
-	fun shouldBeAbleToApplyOffers(items: List<Item>, offers: List<Offer>, expected: Int) {
+	fun shouldBeAbleToApplyOffers(items: List<Item>, offers: Set<Offer>, expected: Int) {
 		val shoppingCart = ShoppingCart(offers)
 		items.forEach { shoppingCart.add(it) }
 		assertEquals(expected, shoppingCart.getTotalDiscounts())
@@ -67,12 +67,12 @@ class ShoppingCartTest {
 			val bread = Item("bread", 100)
 			val eggs = Item("eggs", 10000)
 			return Stream.of(
-				Arguments.of(listOf(bread, bread), listOf(TwoForOneOffer(bread)), 100),
-				Arguments.of(listOf(bread), listOf(TwoForOneOffer(bread)), 0),
-				Arguments.of(listOf(bread, bread, bread), listOf(TwoForOneOffer(bread)), 100),
-				Arguments.of(listOf(bread, bread, bread, bread), listOf(TwoForOneOffer(bread)), 200),
-				Arguments.of(listOf(bread, bread, eggs, eggs), listOf(TwoForOneOffer(bread)), 100),
-				Arguments.of(listOf(bread, bread, eggs, eggs), listOf(TwoForOneOffer(bread), TwoForOneOffer(eggs)), 10100),
+				Arguments.of(listOf(bread, bread), setOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread), setOf(TwoForOneOffer(bread)), 0),
+				Arguments.of(listOf(bread, bread, bread), setOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread, bread, bread, bread), setOf(TwoForOneOffer(bread)), 200),
+				Arguments.of(listOf(bread, bread, eggs, eggs), setOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread, bread, eggs, eggs), setOf(TwoForOneOffer(bread), TwoForOneOffer(eggs)), 10100),
 			)
 		}
 	}
