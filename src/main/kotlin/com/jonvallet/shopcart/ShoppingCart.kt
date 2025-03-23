@@ -1,12 +1,19 @@
 package com.jonvallet.shopcart
 
-class ShoppingCart(private val offers: List<Offer>?) {
-    constructor() : this(null)
+class ShoppingCart() {
+    constructor(offers: Set<Offer>) : this() {
+        this.offers.addAll(offers)
+    }
 
     private val items = mutableMapOf<Item, Int>()
+    private val offers = mutableSetOf<Offer>()
 
     fun getShoppingCart(): Map<Item, Int> {
         return items.toMap()
+    }
+
+    fun getOffers(): Set<Offer> {
+        return offers.toSet()
     }
 
     fun add(item: Item): ShoppingCart {
@@ -28,12 +35,8 @@ class ShoppingCart(private val offers: List<Offer>?) {
     }
 
     fun getTotalDiscounts(): Int {
-        if (offers != null) {
-            val totalOffersDiscounts = this.offers.sumOf { it.getDiscount(items) }
-            return totalOffersDiscounts
-        } else {
-            return 0
-        }
+        val totalOffersDiscounts = this.offers.sumOf { it.getDiscount(items) }
+        return totalOffersDiscounts
     }
 }
 
