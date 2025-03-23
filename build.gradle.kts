@@ -18,6 +18,7 @@ repositories {
 dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation("org.junit.jupiter:junit-jupiter-params")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

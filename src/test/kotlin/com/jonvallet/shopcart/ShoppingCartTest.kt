@@ -2,7 +2,10 @@ package com.jonvallet.shopcart
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import kotlin.test.assertTrue
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import java.util.stream.Stream
 
 class ShoppingCartTest {
 
@@ -49,4 +52,29 @@ class ShoppingCartTest {
 		val shoppingCart = ShoppingCart().add(bread).add(eggs)
 		assertEquals(expectedValue, shoppingCart.getTotal())
 	}
+
+	@ParameterizedTest
+	@MethodSource("provideItems")
+	fun shouldBeAbleToApplyOffers(items: List<Item>, offers: List<Offer>, expected: Int) {
+		val shoppingCart = ShoppingCart(offers)
+		items.forEach { shoppingCart.add(it) }
+		assertEquals(expected, shoppingCart.getTotalDiscounts())
+	}
+
+	companion object {
+		@JvmStatic
+		fun provideItems(): Stream<Arguments> {
+			val bread = Item("bread", 100)
+			val eggs = Item("eggs", 10000)
+			return Stream.of(
+				Arguments.of(listOf(bread, bread), listOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread), listOf(TwoForOneOffer(bread)), 0),
+				Arguments.of(listOf(bread, bread, bread), listOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread, bread, bread, bread), listOf(TwoForOneOffer(bread)), 200),
+				Arguments.of(listOf(bread, bread, eggs, eggs), listOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread, bread, eggs, eggs), listOf(TwoForOneOffer(bread), TwoForOneOffer(eggs)), 10100),
+			)
+		}
+	}
+
 }
