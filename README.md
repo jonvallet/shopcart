@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* **Java Development Kit (JDK) 21:** Ensure you have JDK 21 installed and configured correctly. You can download it from [Oracle's website](https://www.oracle.com/java/technologies/javase-jdk21-archive-downloads.html) or use a distribution like Adoptium Temurin or SDKMAN!.
+* **Java Development Kit (JDK) 25:** Ensure you have JDK 25 installed and configured correctly. You can download it from [Oracle's website](https://www.oracle.com/java/technologies/javase-jdk25-archive-downloads.html) or use a distribution like Adoptium Temurin or SDKMAN!.
 
 
 ## Building and running tests
