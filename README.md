@@ -11,10 +11,6 @@ Builds the project
 ```shell
 ./gradlew build
 ```
-If you want to see a summary of the tests
-```shell
-./gradlew test -i
-```
 
 ### Assumptions
 * You can have multiple Items with the same name but different price. This can be changed if required
