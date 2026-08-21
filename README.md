@@ -18,7 +18,14 @@ If you want to see a summary of the tests
 
 ### Assumptions
 * You can have multiple Items with the same name but different price. This can be changed if required
-* ShoppingCart is not thread safe. 
+* ShoppingCart is not thread safe.
 * All prices are store as pences in an Integer value.
-* Only one offer per item/price can be applied.
+* Multiple offers can be configured for the same item, but only the best (largest discount) offer per item is applied.
 * The price of an item has to be greater than zero.
+
+## Domain overview
+
+* `ShoppingCart.getTotal()` returns the net price (subtotal minus applied discounts).
+* `ShoppingCart.getSubtotal()` returns the gross price of the items, before any discounts.
+* `ShoppingCart.getTotalDiscounts()` returns the sum of the best offer's discount for each item that has an offer.
+* `Summary` (built via `Summary.fromShoppingCart`) provides an itemised receipt with the subtotal, total discounts and final price.

@@ -58,7 +58,21 @@ class ShoppingCartTest {
 	fun shouldBeAbleToApplyOffers(items: List<Item>, offers: Set<Offer>, expected: Int) {
 		val shoppingCart = ShoppingCart(offers)
 		items.forEach { shoppingCart.add(it) }
-		assertEquals(expected, shoppingCart.getTotalDiscounts())
+		assertEquals(expected, shoppingCart.getTotal())
+	}
+
+	@Test
+	fun shouldApplyBestOfferPerItem() {
+		val bread = Item("bread", 100)
+
+		val oneBread = ShoppingCart(setOf(TwoForOneOffer(bread), TenPercentOffer(bread)))
+			.add(bread)
+		assertEquals(90, oneBread.getTotal())
+
+		val twoBreads = ShoppingCart(setOf(TwoForOneOffer(bread), TenPercentOffer(bread)))
+			.add(bread)
+			.add(bread)
+		assertEquals(100, twoBreads.getTotal())
 	}
 
 	companion object {
@@ -68,11 +82,13 @@ class ShoppingCartTest {
 			val eggs = Item("eggs", 10000)
 			return Stream.of(
 				Arguments.of(listOf(bread, bread), setOf(TwoForOneOffer(bread)), 100),
-				Arguments.of(listOf(bread), setOf(TwoForOneOffer(bread)), 0),
-				Arguments.of(listOf(bread, bread, bread), setOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread), setOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread, bread, bread), setOf(TwoForOneOffer(bread)), 200),
 				Arguments.of(listOf(bread, bread, bread, bread), setOf(TwoForOneOffer(bread)), 200),
-				Arguments.of(listOf(bread, bread, eggs, eggs), setOf(TwoForOneOffer(bread)), 100),
+				Arguments.of(listOf(bread, bread, eggs, eggs), setOf(TwoForOneOffer(bread)), 20100),
 				Arguments.of(listOf(bread, bread, eggs, eggs), setOf(TwoForOneOffer(bread), TwoForOneOffer(eggs)), 10100),
+				Arguments.of(listOf(bread), setOf(TenPercentOffer(bread)), 90),
+				Arguments.of(listOf(bread, bread, bread, bread), setOf(TwoForOneOffer(bread), TenPercentOffer(bread)), 200),
 			)
 		}
 	}
