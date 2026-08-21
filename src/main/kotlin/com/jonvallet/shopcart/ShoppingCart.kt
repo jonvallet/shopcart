@@ -31,12 +31,18 @@ class ShoppingCart() {
     }
 
     fun getTotal(): Int {
+        return getSubtotal() - getTotalDiscounts()
+    }
+
+    fun getSubtotal(): Int {
         return items.map { it.key.price * it.value }.sum()
     }
 
     fun getTotalDiscounts(): Int {
-        val totalOffersDiscounts = this.offers.sumOf { it.getDiscount(items) }
-        return totalOffersDiscounts
+        return this.offers
+            .groupBy { it.item }
+            .values
+            .sumOf { offersForItem -> offersForItem.maxOf { it.getDiscount(items) } }
     }
 }
 

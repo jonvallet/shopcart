@@ -1,6 +1,6 @@
 package com.jonvallet.shopcart
 
-class TwoForOneOffer(private val item: Item): Offer  {
+data class TwoForOneOffer(override val item: Item): Offer  {
     override fun getDiscount(items: Map<Item, Int>): Int {
         val quantity = items.getOrDefault(item, 0)
         return if (quantity > 1) {
